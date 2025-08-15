@@ -5,172 +5,91 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Amar Club</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: #000;
-    color: #f00;
-    font-family: monospace;
-    overflow: hidden;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:#000;color:#f00;font-family:monospace;
+    overflow:hidden;height:100vh;
+    display:flex;justify-content:center;align-items:center;
   }
-  canvas {
-    position: fixed;
-    inset: 0;
-    width: 100%; height: 100%;
-    z-index: -1;
+  canvas{
+    position:fixed;inset:0;width:100%;height:100%;z-index:-1;
   }
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      rgba(255,0,0,0.03) 0px,
-      rgba(255,0,0,0.03) 1px,
-      transparent 2px
-    );
-    animation: scan 5s linear infinite;
-    pointer-events: none;
-    z-index: 0;
+  body::before{
+    content:'';position:fixed;inset:0;
+    background:repeating-linear-gradient(rgba(255,0,0,.03)0px,rgba(255,0,0,.03)1px,transparent2px);
+    animation:scan5s linear infinite;pointer-events:none;z-index:0;
   }
-  @keyframes scan {
-    0% { background-position: 0 0; }
-    100% { background-position: 0 100%; }
+  @keyframes scan{0%{background-position:0 0;}100%{background-position:0 100%;}}
+  .panel{
+    position:relative;z-index:1;width:92vw;max-width:420px;
+    background:rgba(0,0,0,.7);border:1px solid rgba(255,0,0,.35);
+    box-shadow:0 0 24px rgba(255,0,0,.25);
+    border-radius:16px;padding:20px 16px 24px; backdrop-filter:blur(6px);
   }
-  .panel {
-    position: relative;
-    z-index: 1;
-    width: 92vw;
-    max-width: 420px;
-    background: rgba(0,0,0,0.7);
-    border: 1px solid rgba(255,0,0,0.35);
-    box-shadow: 0 0 24px rgba(255,0,0,0.25);
-    border-radius: 16px;
-    padding: 20px 16px 24px;
-    backdrop-filter: blur(6px);
+  .heading{
+    text-align:center;font-weight:800;font-size:24px;letter-spacing:2px;
+    color:#ff9c9c;text-shadow:0 0 10px #f00,0 0 18px #f00;margin-bottom:16px;
   }
-  .heading {
-    text-align: center;
-    font-weight: 800;
-    letter-spacing: 2px;
-    color: #ff9c9c;
-    text-shadow: 0 0 10px #f00, 0 0 18px #f00;
-    margin-bottom: 16px;
-    font-size: 24px;
+  .input-wrap{position:relative;margin-top:24px;}
+  .title-over-input{
+    position:absolute;left:50%;transform:translate(-50%,-60%);top:0;
+    padding:6px 14px;background:#000;border:1px solid rgba(255,0,0,.6);
+    border-radius:999px;font-weight:800;font-size:13px;letter-spacing:1.5px;
+    color:#ffb5b5;text-shadow:0 0 8px #ff0000;
+    box-shadow:0 0 12px rgba(255,0,0,.35), inset 0 0 8px rgba(255,0,0,.15);
+    pointer-events:none;white-space:nowrap;
   }
-  .input-wrap {
-    position: relative;
-    margin-top: 24px;
+  label{display:block;font-size:12px;color:#ff6c6c;margin-bottom:8px;letter-spacing:.5px;}
+  input[type=text]{
+    width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,0,0,.45);
+    background:rgba(0,0,0,.65);color:#ffcccc;font-size:18px;
+    outline:none;text-align:center;box-shadow:inset 0 0 10px rgba(255,0,0,.15);
   }
-  .title-over-input {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -60%);
-    top: 0;
-    padding: 6px 14px;
-    background: #000;
-    border: 1px solid rgba(255,0,0,0.6);
-    border-radius: 999px;
-    font-weight: 800;
-    font-size: 13px;
-    letter-spacing: 1.5px;
-    color: #ffb5b5;
-    text-shadow: 0 0 8px #ff0000;
-    box-shadow: 0 0 12px rgba(255,0,0,0.35), inset 0 0 8px rgba(255,0,0,0.15);
-    pointer-events: none;
-    white-space: nowrap;
+  input[type=text]::placeholder{color:#a43f3f;}
+  input[type=text]:focus{border-color:#ff006a;box-shadow:0 0 10px rgba(255,0,128,.4),inset 0 0 12px rgba(255,0,128,.2);}
+  button{
+    width:100%;margin-top:14px;padding:14px;background:linear-gradient(135deg,#ff8888 0%,#ff0000 100%);
+    border:none;border-radius:12px;color:#000;font-size:16px;
+    font-weight:800;letter-spacing:1px;cursor:pointer;box-shadow:0 10px 20px rgba(255,0,0,.2);
   }
-  label {
-    display: block;
-    font-size: 12px;
-    color: #ff6c6c;
-    margin-bottom: 8px;
-    letter-spacing: .5px;
+  button:active{transform:translateY(1px);}
+  .result-box{
+    margin-top:16px;padding:16px;border-radius:12px;font-weight:800;font-size:18px;color:#ffeaea;
+    text-align:center;min-height:56px;border:1px solid rgba(255,0,0,.25);box-shadow:inset 0 0 12px rgba(255,0,0,.15);
   }
-  input[type="text"] {
-    width: 100%;
-    padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,0,0,0.45);
-    background: rgba(0, 0, 0, 0.65);
-    color: #ffcccc;
-    font-size: 18px;
-    outline: none;
-    text-align: center;
-    box-shadow: inset 0 0 10px rgba(255,0,0,0.15);
+  .small{background-color:rgba(0,100,255,.12);} .big{background-color:rgba(255,152,0,.12);}
+  .red{color:#ff6a6a;text-shadow:0 0 8px #ff0000;} .hacking-effect{animation:glitch1s infinite;}
+  @keyframes glitch{
+    0%{text-shadow:2px 2px #f00,-2px -2px #900;}20%{text-shadow:-2px -1px #f00,2px 1px #900;}
+    40%{text-shadow:2px -1px #f00,-1px 1px #900;}60%{text-shadow:-1px 1px #f00,1px -1px #900;}
+    80%{text-shadow:1px -1px #f00,-2px 2px #900;}100%{text-shadow:0 0 5px #f00,0 0 10px #900;}
   }
-  input[type="text"]::placeholder { color: #a43f3f; }
-  input[type="text"]:focus {
-    border-color: #ff006a;
-    box-shadow: 0 0 10px rgba(255,0,128,0.4), inset 0 0 12px rgba(255,0,128,0.2);
+  @media(max-width:420px){.heading{font-size:22px;}input[type=text]{font-size:17px;}}
+
+  /* contact button */
+  .dev-btn{
+    position:absolute;top:-12px;right:-12px;padding:8px 14px;
+    background:rgba(255,0,0,.85);color:#fff;border-radius:20px;
+    font-size:13px;font-weight:700;letter-spacing:.5px;text-decoration:none;
+    box-shadow:0 5px 15px rgba(255,0,0,.4);transition:.3s;
   }
-  button {
-    width: 100%;
-    margin-top: 14px;
-    padding: 14px;
-    background: linear-gradient(135deg, #ff8888 0%, #ff0000 100%);
-    border: none;
-    border-radius: 12px;
-    color: #000;
-    font-size: 16px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    cursor: pointer;
-    box-shadow: 0 10px 20px rgba(255,0,0,0.2);
-  }
-  button:active { transform: translateY(1px); }
-  .result-box {
-    margin-top: 16px;
-    padding: 16px;
-    border-radius: 12px;
-    font-weight: 800;
-    font-size: 18px;
-    color: #ffeaea;
-    text-align: center;
-    min-height: 56px;
-    border: 1px solid rgba(255,0,0,0.25);
-    box-shadow: inset 0 0 12px rgba(255,0,0,0.15);
-  }
-  .small { background-color: rgba(0, 100, 255, 0.12); }
-  .big   { background-color: rgba(255, 152, 0, 0.12); }
-  .red   { color: #ff6a6a; text-shadow: 0 0 8px #ff0000; }
-  .green { color: #ff6a6a; text-shadow: 0 0 8px #ff0000; }
-  .hacking-effect { animation: glitch 1s infinite; }
-  @keyframes glitch {
-    0%   { text-shadow: 2px 2px #f00, -2px -2px #900; }
-    20%  { text-shadow: -2px -1px #f00, 2px 1px #900; }
-    40%  { text-shadow: 2px -1px #f00, -1px 1px #900; }
-    60%  { text-shadow: -1px 1px #f00, 1px -1px #900; }
-    80%  { text-shadow: 1px -1px #f00, -2px 2px #900; }
-    100% { text-shadow: 0 0 5px #f00, 0 0 10px #900; }
-  }
-  @media (max-width: 420px) {
-    .heading { font-size: 22px; }
-    input[type="text"] { font-size: 17px; }
-  }
+  .dev-btn:hover{transform:scale(1.06) translateY(-2px);box-shadow:0 8px 18px rgba(255,0,0,.6);}
 </style>
 </head>
 <body>
 <canvas id="matrix"></canvas>
 <div class="panel">
+
+  <!-- contact button -->
+  <a href="https://t.me/HRIDOY_CYBER_ZONE" target="_blank" class="dev-btn">Contact</a>
+
   <div class="heading">AMAR CLUB</div>
   <form id="cloubForm" autocomplete="off">
     <label for="numbersInput">Enter Three Numbers (0-9) Without Spaces</label>
     <div class="input-wrap">
       <div class="title-over-input">HS COMMUNITY</div>
-      <input
-        type="text"
-        id="numbersInput"
-        name="numbersInput"
-        maxlength="3"
-        pattern="[0-9]{3}"
-        required
-        placeholder="e.g. 000"
-        inputmode="numeric"
-      />
+      <input type="text" id="numbersInput" name="numbersInput" maxlength="3" pattern="[0-9]{3}"
+       required placeholder="e.g. 000" inputmode="numeric" />
     </div>
     <button type="submit">Calculate Result</button>
   </form>
@@ -180,74 +99,30 @@
 </div>
 
 <script>
-  const canvas = document.getElementById("matrix");
-  const ctx = canvas.getContext("2d");
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resizeCanvas();
-  window.addEventListener("resize", resizeCanvas);
-  const glyphs = "01<>[]{}#@$%^&*+=-ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  const fontSize = 16;
-  let columns = Math.floor(canvas.width / fontSize);
-  let drops = new Array(columns).fill(0);
-  function draw() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#f00"; // লাল থিম
-    ctx.font = fontSize + "px monospace";
-    for (let i = 0; i < drops.length; i++) {
-      const text = glyphs.charAt(Math.floor(Math.random() * glyphs.length));
-      const x = i * fontSize;
-      const y = (drops[i] + 1) * fontSize;
-      ctx.fillText(text, x, y);
-      if (y > canvas.height) {
-        drops[i] = 0;
-      } else {
-        drops[i] += 1;
-      }
-    }
+  const canvas=document.getElementById("matrix"),ctx=canvas.getContext("2d");
+  function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+  resizeCanvas();window.addEventListener("resize",resizeCanvas);
+  const glyphs="01<>[]{}#@$%^&*+=-ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  const fontSize=16;let columns=Math.floor(canvas.width/fontSize);let drops=new Array(columns).fill(0);
+  function draw(){
+    ctx.fillStyle="rgba(0,0,0,0.08)";ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#f00";ctx.font=fontSize+"px monospace";
+    for(let i=0;i<drops.length;i++){const t=glyphs.charAt(Math.floor(Math.random()*glyphs.length)),x=i*fontSize,y=(drops[i]+1)*fontSize;
+      ctx.fillText(t,x,y); if(y>canvas.height)drops[i]=0; else drops[i]++;}
     requestAnimationFrame(draw);
-  }
-  requestAnimationFrame(draw);
-  window.addEventListener("resize", () => {
-    columns = Math.floor(canvas.width / fontSize);
-    drops = new Array(columns).fill(0);
-  });
+  } requestAnimationFrame(draw);
+  window.addEventListener("resize",()=>{columns=Math.floor(canvas.width/fontSize);drops=new Array(columns).fill(0);});
 
-  const form = document.getElementById('cloubForm');
-  const resultBox = document.getElementById('result');
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    let inputVal = form.numbersInput.value.trim();
-    if (!/^[0-9]{3}$/.test(inputVal)) {
-      resultBox.textContent = "Please enter exactly 3 digits (0-9) without spaces.";
-      resultBox.className = "result-box";
-      return;
-    }
-    const digits = inputVal.split('').map(d => parseInt(d, 10));
-    const [n1, n2, n3] = digits;
-
-    const total = (n1 + n2) - n3;
-
-    let sizeClass = "";
-    if (total >= 0 && total <= 4) sizeClass = "small";
-    else if (total >= 5 && total <= 9) sizeClass = "big";
-
-    const colorClass = "red"; // সবসময় লাল
-
-    resultBox.textContent = "ACCESSING SYSTEM...";
-    resultBox.className = "result-box hacking-effect";
-
-    setTimeout(() => {
-      const sizeText = sizeClass === "small" ? "SMALL" : "BIG";
-      const colorText = "RED";
-      const resultText = `Result: <span>${total}</span> — ${sizeText} — <span class="${colorClass}">${colorText}</span>`;
-      resultBox.innerHTML = resultText;
-      resultBox.className = `result-box ${sizeClass} ${colorClass}`;
-    }, 1500);
+  const form=document.getElementById("cloubForm"),resultBox=document.getElementById("result");
+  form.addEventListener("submit",e=>{
+    e.preventDefault();let v=form.numbersInput.value.trim();
+    if(!/^[0-9]{3}$/.test(v)){resultBox.textContent="Please enter exactly 3 digits (0-9) without spaces.";resultBox.className="result-box";return;}
+    const d=v.split("").map(n=>parseInt(n)),[n1,n2,n3]=d,total=(n1+n2)-n3;
+    let size=""; if(total>=0&&total<=4)size="small"; else if(total>=5&&total<=9)size="big";
+    const color="red"; resultBox.textContent="ACCESSING SYSTEM..."; resultBox.className="result-box hacking-effect";
+    setTimeout(()=>{const sTxt=size==="small"?"SMALL":"BIG"; const cTxt="RED";
+      const txt=`Result: <span>${total}</span> — ${sTxt} — <span class="${color}">${cTxt}</span>`;
+      resultBox.innerHTML=txt; resultBox.className=`result-box ${size} ${color}`;},1500);
   });
 </script>
 </body>
